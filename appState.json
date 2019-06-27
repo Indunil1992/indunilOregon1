@@ -1,28 +1,29 @@
 {
   "EDITOR_STATE": {
     "allProjectFiles": {
-      "e1456a15-04dd-463b-8a8c-74fc473ec5d7": {
-        "id": "e1456a15-04dd-463b-8a8c-74fc473ec5d7",
+      "13b1499e-a0a5-406b-a0b3-b8ea4d8a01ee": {
+        "id": "13b1499e-a0a5-406b-a0b3-b8ea4d8a01ee",
         "parent": null,
         "name": "indunilOregon1",
         "type": "DIRECTORY",
         "isDirectory": true,
         "children": [
-          "e01c6cfa-ae33-4e8b-8a4d-80ef880fc9a4"
+          "2b2e0236-3326-45dd-b09b-578c7ca5659f",
+          "4b72494d-ff86-4a2b-bb24-e60eb2db1d88"
         ],
         "isRemovable": false,
         "filePath": "indunilOregon1"
       },
-      "e01c6cfa-ae33-4e8b-8a4d-80ef880fc9a4": {
-        "id": "e01c6cfa-ae33-4e8b-8a4d-80ef880fc9a4",
-        "parent": "e1456a15-04dd-463b-8a8c-74fc473ec5d7",
+      "2b2e0236-3326-45dd-b09b-578c7ca5659f": {
+        "id": "2b2e0236-3326-45dd-b09b-578c7ca5659f",
+        "parent": "13b1499e-a0a5-406b-a0b3-b8ea4d8a01ee",
         "name": "lambda.js",
         "type": "JS_LAMBDA",
         "isDirectory": false,
         "children": [],
         "isRemovable": true,
         "filePath": "indunilOregon1/lambda.js",
-        "code": "exports.handler = function(event, context, callback) {\n    \n    callback(null, {\"message\": \"Successfully executed\"});\n}",
+        "code": "let SL_AWS = require('slappforge-sdk-aws');\nlet connectionManager = require('./ConnectionManager');\nconst rds = new SL_AWS.RDS(connectionManager);\n\nexports.handler = function (event, context, callback) {\n\n\n    // You must always end/destroy the DB connection after it's used\n    rds.beginTransaction({\n        instanceIdentifier: 'indunil'\n    }, function (error, connection) {\n        if (error) {\n            throw error;\n        }\n    });\n\n\n\n\n    callback(null, { \"message\": \"Successfully executed\" });\n}",
         "config": {
           "runtime": "nodejs8.10",
           "handler": "handler",
@@ -30,38 +31,67 @@
           "memory": 128,
           "layers": []
         },
-        "triggers": [
-          {
-            "resourceName": "apigusWest2Oregontestqaindunilget",
-            "config": {}
-          }
-        ]
+        "triggers": []
+      },
+      "4b72494d-ff86-4a2b-bb24-e60eb2db1d88": {
+        "id": "4b72494d-ff86-4a2b-bb24-e60eb2db1d88",
+        "parent": "13b1499e-a0a5-406b-a0b3-b8ea4d8a01ee",
+        "name": "ConnectionManager.js",
+        "type": "JS_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "indunilOregon1/ConnectionManager.js",
+        "code": "module.exports = function() {\n    this.dbConnections = [];\n\n    this.dbConnections[\"indunil\"] = {\n        host: process.env.EndPoint_rdsIndunil,\n        port: process.env.Port_rdsIndunil,\n        user: process.env.User_rdsIndunil,\n        password: process.env.Password_rdsIndunil,\n        database: \"indunil\"\n    };\n};"
       }
     },
     "deletedFiles": [],
-    "rootNode": "e1456a15-04dd-463b-8a8c-74fc473ec5d7",
+    "rootNode": "13b1499e-a0a5-406b-a0b3-b8ea4d8a01ee",
     "openFiles": [
-      "e01c6cfa-ae33-4e8b-8a4d-80ef880fc9a4"
+      "2b2e0236-3326-45dd-b09b-578c7ca5659f"
     ],
-    "currentFileId": "e01c6cfa-ae33-4e8b-8a4d-80ef880fc9a4",
+    "currentFileId": "2b2e0236-3326-45dd-b09b-578c7ca5659f",
     "resources": {
-      "apigusWest2Oregontestqaindunilget": {
-        "name": "apigusWest2Oregontestqaindunilget",
-        "type": "API_GATEWAY",
+      "rds-indunil": {
+        "name": "rds-indunil",
+        "type": "RDS",
         "config": {
-          "selectedRegion": "us-west-2",
-          "apiMode": 0,
-          "apiName": "Oregon",
-          "endpointType": "EDGE",
-          "resourceMode": 0,
-          "resourceName": "test/qa/indunil",
-          "resourcePath": "/test/qa/indunil",
-          "restMethod": "GET",
-          "proxyIntegration": false,
-          "enableCORS": false,
-          "stageMode": 0,
-          "stageName": "test",
-          "mode": 0
+          "editMode": false,
+          "operation": 1,
+          "rdsInstance": {
+            "rdsEngineType": "mysql",
+            "rdsEdition": "",
+            "rdsInstanceSpec": {
+              "dbInstanceClass": "db.t2.micro",
+              "dbLicenseModel": "general-public-license",
+              "dbEngineVersion": "5.7.19"
+            },
+            "rdsSetting": {
+              "instanceIdentifier": "indunil",
+              "masterUsername": "Oregon1",
+              "masterPassword": "sachithra"
+            },
+            "rdsDBOptions": {
+              "dbName": "indunil",
+              "dbPort": "3306"
+            },
+            "rdsInstanceArn": "",
+            "Host": "",
+            "doesExist": false,
+            "initializationQuery": "",
+            "alreadyDeployed": false
+          },
+          "rdsInstanceResources": [],
+          "projectRegion": "us-west-2",
+          "mode": 0,
+          "additionalFiles": [],
+          "params": {
+            "query": "",
+            "inserts": ""
+          },
+          "isGlobalEditMode": false,
+          "enableInject": true,
+          "isNewFromGlobal": false
         }
       }
     },
@@ -80,17 +110,25 @@
       }
     ],
     "packageJSON": {
-      "dependencies": {}
+      "dependencies": {
+        "slappforge-sdk-aws": {
+          "name": "slappforge-sdk-aws",
+          "language": "javascript",
+          "version": "0.0.5",
+          "dev": false,
+          "notRemovable": false
+        }
+      }
     }
   },
   "PROJECT_META": {
     "projectName": "indunilOregon1",
-    "projectDescription": "indunilOregon1",
+    "projectDescription": "Oregon1",
     "projectVersion": "1.0.0",
     "projectRegion": "us-west-2",
     "platform": "AWS",
     "platformRegions": {},
-    "lastSave": 1561376180439
+    "lastSave": 1561623871018
   },
   "VCS_STATE": {
     "provider": "GitHub",
